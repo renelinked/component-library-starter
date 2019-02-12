@@ -7,5 +7,5 @@ export interface HelloWorldProps {
 }
 
 export const HelloWorld: React.SFC<HelloWorldProps> = props => {
-    return <Styles.StyledHelloWorld color={props.color}>{props.children || 'Hello, World!'}</Styles.StyledHelloWorld>
+    return <Styles.StyledHelloWorld color={props.color}>{'Hello, World!'}</Styles.StyledHelloWorld>
 }

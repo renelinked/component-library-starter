@@ -2,3 +2,6 @@
 lib
 node_modules
 .DS_Store
+/component-library/*.d.ts
+/component-library/*.js
+/tmp/

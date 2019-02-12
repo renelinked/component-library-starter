@@ -1,17 +1,12 @@
 import { TestBase, html } from './test-base';
 import { property, css } from 'lit-element';
 
-export interface TestCompProps {
-  compName?: string,
-  cssVariables?: Object
-}
-
 export class TestComp extends TestBase {
   static get properties () {
     return {};
   }
 
-  @property({type: String, reflect: false, attribute: false}) compName = 'fds-header';
+  @property({type: String, reflect: false, attribute: false}) compNamee = 'fds-header';
 
   @property({type: Object, reflect: false, attribute: false}) cssVariables = 
   {
