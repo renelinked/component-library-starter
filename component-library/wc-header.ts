@@ -1,16 +1,11 @@
-import { TestBase, html } from './test-base';
+import { WcBase, html } from './wc-base';
 import { property, css } from 'lit-element';
 
-export class TestComp extends TestBase {
-  static get properties () {
-    return {};
-  }
-
-  @property({type: String, reflect: false, attribute: false}) compNamee = 'fds-header';
+export class WcHeader extends WcBase {
 
   @property({type: Object, reflect: false, attribute: false}) cssVariables = 
   {
-    headerPadding: '--fds-header-padding',
+    headerPadding: '--wc-header-padding',
     primaryTextSize: '--primary-text-size',
     primaryFontFamily: '--primary-font-family',
     headerBgColor: '--header-bg-color',
@@ -59,5 +54,5 @@ export class TestComp extends TestBase {
   }
 }
 
-customElements.define('test-comp', TestComp);
+customElements.define('wc-header', WcHeader);
 

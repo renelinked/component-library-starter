@@ -1,7 +1,9 @@
 const fs = require('fs');
 
-
+let wrapperFilenames = [];
+let savedDirname = '';
 function readFiles(dirname = 'component-library/') {
+    savedDirname = dirname;
     fs.readdir(dirname, function(err, filenames) {
       if (err) {
         throw err;
@@ -32,7 +34,14 @@ function readTypingsFile (dirname, filename = '', tsContent) {
 }
 
 function saveGeneratedWrapper (filename, fileContents) {
-    fs.writeFile(`tmp/${filename}-wrapper.tsx`, fileContents, () => console.log('wrote file'));
+    let wrapperFilename = `${filename}-wrapper`;
+    wrapperFilenames.push(wrapperFilename);
+    fs.writeFile(`tmp/${wrapperFilename}.tsx`, fileContents, () => saveIndexFile());
+}
+
+function saveIndexFile () {
+    let indexFile = wrapperFilenames.map(fName => `export * from './${fName}';`).join('\n');
+    fs.writeFile(`tmp/index.ts`, indexFile, () => console.log('wrote index.ts'));
 }
 
 function processBothFiles (tsContent, typingsContent) {
@@ -70,8 +79,11 @@ function replaceCssVarsInArray (cssVars = [[]], propTypesArray = [[]]) {
 }
 
 function findSlots (tsContent = '') {
-    return safeMatch(tsContent, /<slot.*name=".*">/g)
-        .map(match => [/name="(.*)">/.exec(match)[1], 'React.ReactNode']);
+    return safeMatch(tsContent, /<slot.*>/g)
+        .map(slot => {
+            let namedSlotMatch = /name="(.*)">/.exec(slot);
+            return  namedSlotMatch ? [namedSlotMatch[1], 'React.ReactNode'] : ['children', 'React.ReactNode'];
+        });
 }
 
 function findPropTypes (typingsContent = '') {
@@ -122,8 +134,7 @@ export interface ${wrapperClassPropsName} {
     }).join('\n ')}
 }
 
-let myRef: any = React.createRef();
-const updateProps = (props: ${wrapperClassPropsName}) => {
+const updateProps = (props: ${wrapperClassPropsName}, myRef: any) => {
     ${propTypeArray
         .filter(([prop, type]) => 
             (type.toLowerCase() === 'string' || type.toLowerCase() === 'number' || type.toLowerCase() === 'object' || type.toLowerCase() === 'array')
@@ -136,22 +147,26 @@ const methods = {
     componentDidUpdate: updateProps
 };
 
-export const ${wrapperClassName}: React.FunctionComponent<${wrapperClassPropsName}> = lifecycle(methods)((props: ${wrapperClassPropsName}) => {
+export const ${compClassName}: React.FunctionComponent<${wrapperClassPropsName}> = (props: ${wrapperClassPropsName}) => {
     let cssVars: object = Object.keys(props)
         .filter(prop => prop.includes('--') && props[prop])
         .reduce((acc, val) => {
             return {...acc, [val]: props[val]};
         }, {})
+    let myRef: any = React.createRef();
+    window.setTimeout(() => {
+        updateProps(props, myRef);
+    })
     return (
     <div style={cssVars}>
         <${compTagName} ref={myRef}>
             ${propTypeArray
                 .filter(([prop, type]) => type.includes('React.ReactNode'))
-                .map(([prop, type]) => `<div slot="${prop}">{props.${prop}}</div>`)
+                .map(([prop, type]) => prop.includes('children') ? `{props.${prop}}` : `<div slot="${prop}">{props.${prop}}</div>`)
                 .join('\n           ')}
         </${compTagName}>
     </div>);
-})
+}
 `;
 }
 

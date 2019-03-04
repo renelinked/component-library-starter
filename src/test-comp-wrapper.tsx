@@ -13,7 +13,7 @@ declare global {
 
 export interface TestCompWrapperProps {
     'compName': string;
- '--fds-header-padding': string;
+ '--wc-header-padding': string;
  '--primary-text-size': string;
  '--primary-font-family': string;
  '--header-bg-color': string;

@@ -1,23 +1,18 @@
-import { FdsBase, html } from './fds-base';
-class FdsLink extends FdsBase {
-  static get properties () {
-    return {
-      text: {
-        type: String
-      },
-      href: {
-        type: String
-      }
-    };
-  }
+import { WcBase, html } from './wc-base';
+import { property, css } from 'lit-element';
 
-  get cssVariables () {
-    return {
-      primaryTextColor: '--primary-text-color',
-      primaryFontFamily: '--primary-font-family',
-      primaryFontWeight: '--primary-font-weight'
-    };
-  }
+export class WcLink extends WcBase {
+
+  @property({type: String}) text = '';
+
+  @property({type: String}) href = '';
+
+  @property({type: Object, reflect: false, attribute: false}) cssVariables = 
+  {
+    primaryTextColor: '--primary-text-color',
+    primaryFontFamily: '--primary-font-family',
+    primaryFontWeight: '--primary-font-weight'
+  };
 
   constructor () {
     super();
@@ -26,13 +21,13 @@ class FdsLink extends FdsBase {
   render () {
     return html`
       <style>
-        a.fds-link {
+        a.wc-link {
           color: var(${this.cssVariables.primaryTextColor});
           font-family: var(${this.cssVariables.primaryFontFamily});
           font-weight: var(${this.cssVariables.primaryFontWeight});
           text-decoration: none;
         }
-        a.fds-link:hover {
+        a.wc-link:hover {
           text-decoration: underline;
           cursor: pointer;
         }
@@ -46,10 +41,10 @@ class FdsLink extends FdsBase {
           user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
         }
       </style>
-      ${this.href ? html`<a draggable=false href="${this.href}" class="fds-link noselect">${this.text}</a>`
-                  : html`<a draggable=false class="fds-link noselect">${this.text}</a>`}
+      ${this.href ? html`<a draggable=false href="${this.href}" class="wc-link noselect">${this.text}</a>`
+                  : html`<a draggable=false class="wc-link noselect">${this.text}</a>`}
     `;
   }
 }
 
-customElements.define('fds-link', FdsLink);
+customElements.define('wc-link', WcLink);
