@@ -1,15 +1,22 @@
-# component-library-start
+# component-library-start For Web Components
+> This project was for determining the complexity and level of effort to generate a web component wrapper in React. 
 
-This is the example project in use at https://meetalva.io/doc/docs/guides/create-library.html?guides-enabled=true
+## Disclaimer
+> This project is meant as a proof-of-concept and is a bit hacky.
 
 ## Getting started
 
 ```
-https://github.com/meetalva/component-library-starter.git
-cd component-library
+https://github.com/zacktayl/component-library-starter.git
+git checkout web-component-support
 npm install
-npm run build -w
+npm run build
 ```
+
+The build command will first compile the contrived, sample web component library (component-library/). It will then run src/wrapper-generator.js which produces one `*-wrapper.tsx` file for each component in tmp/. Last, the typescript compiler is run for all files in the project (output to lib/).
+
+At this point, you should be able to open Alva and navigate to the package.json for importing the web component library.
+
 
 ## License
 
