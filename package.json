@@ -4,9 +4,8 @@
   "description": "",
   "main": "lib/src/index.js",
   "scripts": {
-    "build": "tsc",
-    "generate:ts": "cd component-library/ && tsc && cd .. && node src/wrapper-generator.ts.js",
-    "generate:js": "node src/wrapper-generator.js"
+    "build": "npm run generate:wrappers && tsc",
+    "generate:wrappers": "cd component-library/ && tsc && cd .. && node src/wrapper-generator.js"
   },
   "repository": {
     "type": "git",
